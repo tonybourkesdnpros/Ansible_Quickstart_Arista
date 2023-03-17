@@ -1,0 +1,34 @@
+---
+servers:
+  host1:
+    adapters:
+    - type: server
+      server_ports: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4]
+      switch_ports: [ Ethernet6, Ethernet7, Ethernet6, Ethernet7 ]
+      switches: [ leaf1, leaf2 ]
+      vlans: 10
+      mode: access
+      spanning_tree_portfast: edge
+      port_channel:
+        description: PortChannel host1
+        mode: active
+  host2:
+    adapters:
+    - type: server
+      server_ports: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4]
+      switch_ports: [ Ethernet6, Ethernet7, Ethernet6, Ethernet7 ]
+      switches: [ leaf3, leaf4 ]
+      vlans: 20
+      mode: access
+      spanning_tree_portfast: edge
+      port_channel:
+        description: PortChannel host2
+        mode: active
+
+    - type: ilo
+      server_ports: [ iLO ]
+      switch_ports: [ Ethernet5 ]
+      switches: [ dc1-leaf2c ]
+      vlans: 11
+      mode: access
+      spanning_tree_portfast: edge

@@ -1,0 +1,18 @@
+---
+- name: Apply configlets
+  hosts: cvp1
+
+  vars_files:
+    - ../vars/CVP_model.yml
+  tasks:
+    - name: Apply configlets
+      arista.cvp.cv_device_v3:
+        devices: "{{ cvp_devices }}"
+        apply_mode: strict
+      register: apply_result
+    - name: Print output
+      debug:
+        msg: "{{ apply_result }}"
+    - name: Run tasks through a change control (warning! no approval)
+      arista.cvp.cv_task_v3:
+        tasks: "{{ apply_result.taskIds }}"

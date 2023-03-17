@@ -1,0 +1,21 @@
+---
+- name: Create EOS EVPN/VXLAN Configuration
+  hosts: FABRIC
+  connection: local
+  gather_facts: false
+  collections:
+    - arista.avd
+    - arista.cvp
+  vars:
+    fabric_name: "FABRIC"
+    fabric_dir_name: "FABRIC"
+    execute_tasks: false
+
+  tasks:
+    - name: Generate intended variables
+      import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate device intended configuration and document it
+      import_role:
+        name: eos_cli_config_gen

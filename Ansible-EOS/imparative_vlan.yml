@@ -1,0 +1,9 @@
+---
+- name: Add VLAN to device via declarative method
+  hosts: all
+  tasks:
+  - name: Add VLAN 10
+    arista.eos.config:
+      lines:
+        - vlan 10
+        - name DMZ

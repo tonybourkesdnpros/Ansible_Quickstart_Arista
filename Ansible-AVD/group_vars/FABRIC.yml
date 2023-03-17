@@ -1,0 +1,95 @@
+---
+# L3LS Fabric Values - update these values with caution,
+# SOME CHANGES COULD BE DISRUPTIVE.
+
+fabric_name: FABRIC
+
+# Various fabric settings
+
+# Enable vlan aware bundles
+vxlan_vlan_aware_bundles: true
+
+
+# Spine Switches
+spine:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.101.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+    mlag: false
+  nodes:
+    spine1:
+      id: 11
+      mgmt_ip: 192.168.0.11/24
+    spine2:
+      id: 12
+      mgmt_ip: 192.168.0.12/24
+    spine3:
+      id: 13
+      mgmt_ip: 192.168.0.13/24
+
+
+l3leaf:
+  defaults:
+    bgp_as: 65100-65199
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.101.0/24
+    vtep_loopback_ipv4_pool: 192.168.102.0/24
+    uplink_interfaces: [Ethernet3, Ethernet4, Ethernet5]
+    uplink_switches: [spine1, spine2, spine3]
+    uplink_ipv4_pool: 192.168.103.0/24
+    mlag_interfaces: [Ethernet1, Ethernet2]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+    mlag: true
+
+  node_groups:
+    rack1:
+      nodes:
+        leaf1:
+          id: 1
+          mgmt_ip: 192.168.0.21/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2, Ethernet1]
+        leaf2:
+          id: 2
+          mgmt_ip: 192.168.0.22/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3, Ethernet2]
+    rack2:
+      nodes:
+        leaf3:
+          id: 3
+          mgmt_ip: 192.168.0.23/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4, Ethernet3]
+        leaf4:
+          id: 4
+          mgmt_ip: 192.168.0.24/24
+          uplink_switch_interfaces: [Ethernet5, Ethernet5, Ethernet4]
+
+
+
+# Update p2p mtu 9000 -> 1500
+p2p_uplinks_mtu: 1500
+
+# Adjust default bfd values
+# bfd_multihop:
+#   interval: 1200
+#   min_rx: 1200
+#   multiplier: 3
+
+
+# Needed for ATD Lab Environment
+dns_domain: atd.lab
+mgmt_interface: Management1
+mgmt_interface_vrf: default
+mgmt_gateway: 192.168.0.1

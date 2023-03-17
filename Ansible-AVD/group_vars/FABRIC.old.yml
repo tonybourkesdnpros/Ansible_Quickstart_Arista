@@ -1,0 +1,117 @@
+---
+# Common AVD group variables
+fabric_name: FABRIC
+
+
+# Default gateway used for the management interface
+mgmt_gateway: 192.168.0.1
+
+# Spine switch group
+spine:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 192.168.101.0/24
+    bgp_as: 65100
+    bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+
+  nodes:
+    spine1:
+      id: 11
+      mgmt_ip: 192.168.0.11/24
+    spine2:
+      id: 12
+      mgmt_ip: 192.168.0.12/24
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 192.168.101.0/24
+    vtep_loopback_ipv4_pool: 192.168.102.0/24
+    uplink_interfaces: ['Ethernet3', 'Ethernet4']
+    uplink_switches: ['spine1', 'spine2']
+    uplink_ipv4_pool: 192.168.103.0/24
+    mlag_interfaces: ['Ethernet1', 'Ethernet1']
+    mlag_peer_ipv4_pool: 10.255.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
+    bgp_defaults:
+      # The following command must not be enabled when using vEOS-lab
+      # - update wait-install
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  node_groups:
+
+    mlag1:
+      bgp_as: 65101
+      nodes:
+        leaf1:
+          id: 1
+          mgmt_ip: 192.168.0.21/24
+          # Definition of the port to be used in the uplink device facing this device.
+          # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
+          uplink_switch_interfaces:
+            - Ethernet2
+            - Ethernet2
+        leaf2:
+          id: 2
+          mgmt_ip: 192.168.0.22/24
+          uplink_switch_interfaces:
+            - Ethernet3
+            - Ethernet3
+
+    mlag2:
+      bgp_as: 65102
+      nodes:
+        leaf3:
+          id: 3
+          mgmt_ip: 192.168.0.23/24
+          uplink_switch_interfaces:
+            - Ethernet4
+            - Ethernet4
+        leaf4:
+          id: 4
+          mgmt_ip: 192.168.0.24/24
+          uplink_switch_interfaces:
+            - Ethernet5
+            - Ethernet5
+
+# Define underlay and overlay routing protocol to be used
+underlay_routing_protocol: EBGP
+overlay_routing_protocol: EBGP
+
+# Local users
+local_users:
+  # Define a new user, which is called "ansible"
+  ansible:
+    privilege: 15
+    role: network-admin
+    # Password set to "ansible". Same string as the device generates when configuring a username.
+    sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+# BGP peer groups passwords
+bgp_peer_groups:
+  # all passwords set to "arista"
+  evpn_overlay_peers:
+    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+  ipv4_underlay_peers:
+    password: 7x4B4rnJhZB438m9+BrBfQ==
+  mlag_ipv4_underlay_peer:
+    password: 4b21pAdCvWeAqpcKDFMdWw==
+
+
+p2p_uplinks_mtu: 1500
+
+mgmt_interface: Management1
+mgmt_interface_vrf: default
+
+
+dns_domain: atd.lab

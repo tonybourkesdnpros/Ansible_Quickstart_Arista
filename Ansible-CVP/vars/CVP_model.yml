@@ -1,0 +1,45 @@
+cvp_configlets:
+  MLAG_Left: "{{ lookup('file', '../configlets/MLAG_Left.cfg') }}"
+  MLAG_Right: "{{ lookup('file', '../configlets/MLAG_Right.cfg') }}"
+
+cvp_containers:
+  DC1:
+    parentContainerName: Tenant
+  Spines_DC1:
+    parentContainerName: DC1
+    # configlets:
+    #     - container_configlet
+  Leafs_DC1:
+    parentContainerName: DC1
+  DC2:
+    parentContainerName: Tenant
+  Leafs_DC2:
+    parentContainerName: DC2
+  Spines_DC2:
+    parentContainerName: DC2
+    
+cvp_devices:
+  - fqdn: leaf1
+    parentContainerName: Leaf
+    configlets:
+        - 'ATD-INFRA'
+        - 'leaf1-base'
+        # - 'MLAG_Left'
+  - fqdn: leaf2
+    parentContainerName: Leaf
+    configlets:
+        - 'ATD-INFRA'
+        - 'leaf2-base'
+        # - 'MLAG_Right'
+  - fqdn: leaf3
+    parentContainerName: Leaf
+    configlets:
+        - 'ATD-INFRA'
+        - 'leaf3-base'
+        # - 'MLAG_Left'
+  - fqdn: leaf4
+    parentContainerName: Leaf
+    configlets:
+        - 'ATD-INFRA'
+        - 'leaf4-base'
+        # - 'MLAG_Right'
