@@ -1,49 +1,37 @@
 ---
 CVP_DEVICES:
-  leaf1:
-    name: leaf1
+  - fqdn: leaf1
     parentContainerName: LEAFS
     configlets:
       - AVD_leaf1
-    imageBundle: []
-  leaf2:
-    name: leaf2
+  - fqdn: leaf2
     parentContainerName: LEAFS
     configlets:
       - AVD_leaf2
-    imageBundle: []
-  leaf3:
-    name: leaf3
+  - fqdn: leaf3
     parentContainerName: LEAFS
     configlets:
       - AVD_leaf3
-    imageBundle: []
-  leaf4:
-    name: leaf4
+  - fqdn: leaf4
     parentContainerName: LEAFS
     configlets:
       - AVD_leaf4
-    imageBundle: []
-  spine1:
-    name: spine1
+  - fqdn: spine1
     parentContainerName: SPINES
     configlets:
       - AVD_spine1
-    imageBundle: []
-  spine2:
-    name: spine2
+  - fqdn: spine2
     parentContainerName: SPINES
     configlets:
       - AVD_spine2
-    imageBundle: []
 CVP_CONTAINERS:
   CONNECTED_ENDPOINTS:
-    parent_container: FABRIC
+    parentContainerName: FABRIC
   FABRIC:
-    parent_container: Tenant
+    parentContainerName: Tenant
   LEAFS:
-    parent_container: FABRIC
+    parentContainerName: FABRIC
   NETWORK_SERVICES:
-    parent_container: FABRIC
+    parentContainerName: FABRIC
   SPINES:
-    parent_container: FABRIC
+    parentContainerName: FABRIC

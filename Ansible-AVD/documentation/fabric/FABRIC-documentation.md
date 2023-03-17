@@ -17,12 +17,12 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| FABRIC | l3leaf | leaf1 | 192.168.0.21/24 | vEOS-LAB | Provisioned |
-| FABRIC | l3leaf | leaf2 | 192.168.0.22/24 | vEOS-LAB | Provisioned |
-| FABRIC | l3leaf | leaf3 | 192.168.0.23/24 | vEOS-LAB | Provisioned |
-| FABRIC | l3leaf | leaf4 | 192.168.0.24/24 | vEOS-LAB | Provisioned |
-| FABRIC | spine | spine1 | 192.168.0.11/24 | vEOS-LAB | Provisioned |
-| FABRIC | spine | spine2 | 192.168.0.12/24 | vEOS-LAB | Provisioned |
+| FABRIC | l3leaf | leaf1 | 192.168.0.21/24 | - | Provisioned |
+| FABRIC | l3leaf | leaf2 | 192.168.0.22/24 | - | Provisioned |
+| FABRIC | l3leaf | leaf3 | 192.168.0.23/24 | - | Provisioned |
+| FABRIC | l3leaf | leaf4 | 192.168.0.24/24 | - | Provisioned |
+| FABRIC | spine | spine1 | 192.168.0.11/24 | - | Provisioned |
+| FABRIC | spine | spine2 | 192.168.0.12/24 | - | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 

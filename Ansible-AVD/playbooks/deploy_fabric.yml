@@ -10,3 +10,4 @@
         configlets_prefix: 'AVD'
         state: present
         execute_tasks: false
+        cv_collection: v3

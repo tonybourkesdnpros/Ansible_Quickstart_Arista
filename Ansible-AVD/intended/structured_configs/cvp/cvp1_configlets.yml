@@ -36,7 +36,7 @@ CVP_CONFIGLETS:
     \ 10 vni 10010\n   vxlan vlan 20 vni 10020\n   vxlan vrf VRF_A vni 10\n!\nip virtual-router\
     \ mac-address 00:1c:73:00:00:99\n!\nip routing\nip routing vrf VRF_A\n!\nip prefix-list\
     \ PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.101.0/24 eq 32\n   seq 20\
-    \ permit 192.168.102.0/24 eq 32\n!\nmlag configuration\n   domain-id rack1\n \
+    \ permit 192.168.102.0/24 eq 32\n!\nmlag configuration\n   domain-id mlag1\n \
     \  local-interface Vlan4094\n   peer-address 10.255.252.1\n   peer-link Port-Channel1\n\
     \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route 0.0.0.0/0\
     \ 192.168.0.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list\
@@ -111,7 +111,7 @@ CVP_CONFIGLETS:
     \ 10 vni 10010\n   vxlan vlan 20 vni 10020\n   vxlan vrf VRF_A vni 10\n!\nip virtual-router\
     \ mac-address 00:1c:73:00:00:99\n!\nip routing\nip routing vrf VRF_A\n!\nip prefix-list\
     \ PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.101.0/24 eq 32\n   seq 20\
-    \ permit 192.168.102.0/24 eq 32\n!\nmlag configuration\n   domain-id rack1\n \
+    \ permit 192.168.102.0/24 eq 32\n!\nmlag configuration\n   domain-id mlag1\n \
     \  local-interface Vlan4094\n   peer-address 10.255.252.0\n   peer-link Port-Channel1\n\
     \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route 0.0.0.0/0\
     \ 192.168.0.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list\
@@ -186,7 +186,7 @@ CVP_CONFIGLETS:
     \ 10 vni 10010\n   vxlan vlan 20 vni 10020\n   vxlan vrf VRF_A vni 10\n!\nip virtual-router\
     \ mac-address 00:1c:73:00:00:99\n!\nip routing\nip routing vrf VRF_A\n!\nip prefix-list\
     \ PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.101.0/24 eq 32\n   seq 20\
-    \ permit 192.168.102.0/24 eq 32\n!\nmlag configuration\n   domain-id rack2\n \
+    \ permit 192.168.102.0/24 eq 32\n!\nmlag configuration\n   domain-id mlag2\n \
     \  local-interface Vlan4094\n   peer-address 10.255.252.5\n   peer-link Port-Channel1\n\
     \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route 0.0.0.0/0\
     \ 192.168.0.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list\
@@ -261,7 +261,7 @@ CVP_CONFIGLETS:
     \ 10 vni 10010\n   vxlan vlan 20 vni 10020\n   vxlan vrf VRF_A vni 10\n!\nip virtual-router\
     \ mac-address 00:1c:73:00:00:99\n!\nip routing\nip routing vrf VRF_A\n!\nip prefix-list\
     \ PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.101.0/24 eq 32\n   seq 20\
-    \ permit 192.168.102.0/24 eq 32\n!\nmlag configuration\n   domain-id rack2\n \
+    \ permit 192.168.102.0/24 eq 32\n!\nmlag configuration\n   domain-id mlag2\n \
     \  local-interface Vlan4094\n   peer-address 10.255.252.4\n   peer-link Port-Channel1\n\
     \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route 0.0.0.0/0\
     \ 192.168.0.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list\

@@ -247,7 +247,7 @@ ethernet_interfaces:
       id: 6
       mode: active
 mlag_configuration:
-  domain_id: rack2
+  domain_id: mlag2
   local_interface: Vlan4094
   peer_address: 10.255.252.5
   peer_link: Port-Channel1
