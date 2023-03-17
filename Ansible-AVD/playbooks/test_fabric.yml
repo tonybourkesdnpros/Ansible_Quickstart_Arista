@@ -2,9 +2,7 @@
   hosts: FABRIC
   collections:
     - arista.avd
-    - arista.cvp
   tasks:
-
     - name: deploy configuration to device
       import_role:
         name: arista.avd.eos_validate_state

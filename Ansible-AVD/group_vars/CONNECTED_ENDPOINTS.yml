@@ -24,11 +24,3 @@ servers:
       port_channel:
         description: PortChannel host2
         mode: active
-
-    - type: ilo
-      server_ports: [ iLO ]
-      switch_ports: [ Ethernet5 ]
-      switches: [ dc1-leaf2c ]
-      vlans: 11
-      mode: access
-      spanning_tree_portfast: edge

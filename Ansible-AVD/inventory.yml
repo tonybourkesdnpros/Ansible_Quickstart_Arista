@@ -14,6 +14,13 @@ all:
           ansible_network_os: eos
           ansible_httpapi_port: 443
     FABRIC:
+      vars:
+        ansible_user: arista
+        ansible_ssh_pass: aristazly9 # If using SSH keys, this can be removed
+        ansible_connection: network_cli
+        ansible_network_os: eos
+        ansible_become: yes
+        ansible_become_method: enable
       children:
         SPINES:
           vars:
