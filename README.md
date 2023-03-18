@@ -1,4 +1,4 @@
-# Ansible_Quickstart_Arista
+# Ansible Quickstart for Arista
 
 This is a quickstart repository for a set of playbooks, inventory files, data models, and more to get "stick time" with Ansible and AVD. 
 
