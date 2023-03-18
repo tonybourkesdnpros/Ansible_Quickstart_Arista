@@ -1,0 +1,26 @@
+---
+servers:
+  host1:
+    adapters:
+    - type: server
+      server_ports: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4]
+      switch_ports: [ Ethernet6, Ethernet7, Ethernet6, Ethernet7 ]
+      switches: [ leaf1, leaf2 ]
+      vlans: 10
+      mode: access
+      spanning_tree_portfast: edge
+      port_channel:
+        description: PortChannel host1
+        mode: active
+  host2:
+    adapters:
+    - type: server
+      server_ports: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4] # This is mostly for descriptions
+      switch_ports: [ Ethernet6, Ethernet7, Ethernet6, Ethernet7 ] # This is required for the port channel
+      switches: [ leaf3, leaf4 ]
+      vlans: 20 # If it's a trunk port, you can list VLANs here or use a profile
+      mode: access # access or trunk
+      spanning_tree_portfast: edge # Generally you'll want portfast for hosts/hypervisors
+      port_channel:
+        description: PortChannel host2
+        mode: active # active for LACP, on for static port channel
