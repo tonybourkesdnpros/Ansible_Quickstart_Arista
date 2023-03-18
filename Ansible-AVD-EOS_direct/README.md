@@ -1,6 +1,6 @@
-This directy is for using AVD directly with EOS, bypassing CVP entirely. 
+This directy is for using AVD directly with EOS, bypassing CVP entirely. Normally we would use CVP, as there's lots of advantages. 
 
-CVP is sometimes difficult to home lab, as it requires 16 cores even for the lab version (which most people don't have in their home lab). 
+However, CVP is sometimes difficult to home lab, as it requires 16 cores even for the lab version (which most people don't have in their home lab). 
 
 The build, document, and test playbooks are the same. Only the deploy model is different. 
 
