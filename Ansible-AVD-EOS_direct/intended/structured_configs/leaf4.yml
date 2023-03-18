@@ -101,6 +101,16 @@ static_routes:
   gateway: 192.168.0.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.0.5:9910
+  cvauth:
+    method: key
+    key: atd-lab
+  cvvrf: default
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent>
+  disable_aaa: false
 vlan_internal_order:
   allocation: ascending
   range:
@@ -112,6 +122,17 @@ spanning_tree:
     '0':
       priority: 16384
   no_spanning_tree_vlan: 4093-4094
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eSRalRz7SqSuuU6L$Gj2p7O2vdpg5P05PgDg956pPDnXfW9YDP0kK2D/9flwwT7/CfFsT9C9k1WPPleBKYhdZC/n/8nB7cTx.GJwa1.
+  arista:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eSRalRz7SqSuuU6L$Gj2p7O2vdpg5P05PgDg956pPDnXfW9YDP0kK2D/9flwwT7/CfFsT9C9k1WPPleBKYhdZC/n/8nB7cTx.GJwa1.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCz2+rOUtMZi/xU3dOywlTdK/acsdjq0L16W0yRzYt+4jzF7r9p3/6h/yJfjNxQemQN9WRYjYO6HfbOUlixM8YDRG1KaQflTs1mCMBZzsjTcP5nXRnoYb31W+6leuCVvdfBWat7AmisyadiwemBJDnVZltyCejTETmCedGMPnqe7cobedHras59/IiZ+Zw94VK9aJ4kw14acNMmAIy1eMXGfbE3BK6wqRBlNM50M16WWINzjGaS8WlJ0nSk22rveF6RTHPtcn9QqJqoMIFRTQjXLqPav2HYMMoKs6nOUYoOi1jJ2Wtf6c6nQOmPKLYLfl7bfHMBRmledJITp+wL9uYt
+      arista@recordvideobackup-spare-1-d98f0486
 vrfs:
   default:
     ip_routing: false

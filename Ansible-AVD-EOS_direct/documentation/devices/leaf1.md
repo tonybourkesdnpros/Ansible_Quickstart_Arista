@@ -6,7 +6,9 @@
   - [DNS Domain](#dns-domain)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
+  - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [TerminAttr Daemon](#terminattr-daemon)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -112,7 +114,42 @@ management api http-commands
 
 # Authentication
 
+## Local Users
+
+### Local Users Summary
+
+| User | Privilege | Role |
+| ---- | --------- | ---- |
+| admin | 15 | network-admin |
+| arista | 15 | network-admin |
+
+### Local Users Device Configuration
+
+```eos
+!
+username admin privilege 15 role network-admin secret sha512 $6$eSRalRz7SqSuuU6L$Gj2p7O2vdpg5P05PgDg956pPDnXfW9YDP0kK2D/9flwwT7/CfFsT9C9k1WPPleBKYhdZC/n/8nB7cTx.GJwa1.
+username arista privilege 15 role network-admin secret sha512 $6$eSRalRz7SqSuuU6L$Gj2p7O2vdpg5P05PgDg956pPDnXfW9YDP0kK2D/9flwwT7/CfFsT9C9k1WPPleBKYhdZC/n/8nB7cTx.GJwa1.
+username arista ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCz2+rOUtMZi/xU3dOywlTdK/acsdjq0L16W0yRzYt+4jzF7r9p3/6h/yJfjNxQemQN9WRYjYO6HfbOUlixM8YDRG1KaQflTs1mCMBZzsjTcP5nXRnoYb31W+6leuCVvdfBWat7AmisyadiwemBJDnVZltyCejTETmCedGMPnqe7cobedHras59/IiZ+Zw94VK9aJ4kw14acNMmAIy1eMXGfbE3BK6wqRBlNM50M16WWINzjGaS8WlJ0nSk22rveF6RTHPtcn9QqJqoMIFRTQjXLqPav2HYMMoKs6nOUYoOi1jJ2Wtf6c6nQOmPKLYLfl7bfHMBRmledJITp+wL9uYt arista@recordvideobackup-spare-1-d98f0486
+```
+
 # Monitoring
+
+## TerminAttr Daemon
+
+### TerminAttr Daemon Summary
+
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.0.5:9910 | default | key,atd-lab | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent> | False |
+
+### TerminAttr Daemon Device Configuration
+
+```eos
+!
+daemon TerminAttr
+   exec /usr/bin/TerminAttr -cvaddr=192.168.0.5:9910 -cvauth=key,atd-lab -cvvrf=default -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent> -taillogs
+   no shutdown
+```
 
 # MLAG
 
@@ -224,7 +261,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | MLAG_PEER_leaf2_Ethernet1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 1 |
 | Ethernet2 | MLAG_PEER_leaf2_Ethernet2 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 1 |
-| Ethernet6 | host1 | *access | *10 | *- | *- | 6 |
+| Ethernet6 | host1_Ethernet1 | *access | *10 | *- | *- | 6 |
 
 *Inherited from Port-Channel Interface
 
@@ -272,7 +309,7 @@ interface Ethernet5
    ip address 192.168.103.5/31
 !
 interface Ethernet6
-   description host1
+   description host1_Ethernet1
    no shutdown
    channel-group 6 mode active
 ```

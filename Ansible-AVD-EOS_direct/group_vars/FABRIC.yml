@@ -102,3 +102,27 @@ dns_domain: atd.lab
 mgmt_interface: Management1
 mgmt_interface_vrf: default
 mgmt_gateway: 192.168.0.1
+
+
+### This section is for deploying direclty to EOS and the additional information needed that would otherwise be in a separate configlet
+
+local_users:
+  arista:
+    privilege: 15
+    role: network-admin
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCz2+rOUtMZi/xU3dOywlTdK/acsdjq0L16W0yRzYt+4jzF7r9p3/6h/yJfjNxQemQN9WRYjYO6HfbOUlixM8YDRG1KaQflTs1mCMBZzsjTcP5nXRnoYb31W+6leuCVvdfBWat7AmisyadiwemBJDnVZltyCejTETmCedGMPnqe7cobedHras59/IiZ+Zw94VK9aJ4kw14acNMmAIy1eMXGfbE3BK6wqRBlNM50M16WWINzjGaS8WlJ0nSk22rveF6RTHPtcn9QqJqoMIFRTQjXLqPav2HYMMoKs6nOUYoOi1jJ2Wtf6c6nQOmPKLYLfl7bfHMBRmledJITp+wL9uYt arista@recordvideobackup-spare-1-d98f0486
+    sha512_password: $6$eSRalRz7SqSuuU6L$Gj2p7O2vdpg5P05PgDg956pPDnXfW9YDP0kK2D/9flwwT7/CfFsT9C9k1WPPleBKYhdZC/n/8nB7cTx.GJwa1.
+
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eSRalRz7SqSuuU6L$Gj2p7O2vdpg5P05PgDg956pPDnXfW9YDP0kK2D/9flwwT7/CfFsT9C9k1WPPleBKYhdZC/n/8nB7cTx.GJwa1.
+
+cvp_instance_ip: 192.168.0.5
+
+cvp_ingestauth_key: atd-lab
+# cvp_token_file is only applicable to CV as a Service
+#cvp_token_file: < 'path_to_token_file_on_switch' | default -> '/tmp/cv-onboarding-token' >
+terminattr_ingestgrpcurl_port: 9910
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent>"

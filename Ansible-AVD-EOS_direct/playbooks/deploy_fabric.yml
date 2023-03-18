@@ -1,14 +1,7 @@
 ---
-- name: Deploy fabric to CVP
-  hosts: cvp1
+- name: Deploy fabric to EOS directly
+  hosts: FABRIC
   tasks:
-    - name: provision CVP with AVD configuration
+    - name: Deploy to EOS
       import_role:
-        name: arista.avd.eos_config_deploy_cvp
-      vars:
-        container_root: 'FABRIC'
-        configlets_prefix: 'AVD'
-#       apply_mode: strict # Don't use this unless AVD is the only source of configlets
-        state: present
-        execute_tasks: false # Set to true if you want the change to be made without a change control approval
-        cv_collection: v3
+        name: arista.avd.eos_config_deploy_eapi
