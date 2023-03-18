@@ -17,10 +17,17 @@ all:
       vars:
         ansible_user: arista
         ansible_ssh_pass: aristazly9 # If using SSH keys, this can be removed
+# Use this section if you want to perform testing via the eAPI
+        # ansible_connection: httpapi
+        # ansible_httpapi_use_ssl: True
+        # ansible_httpapi_validate_certs: False
+        # ansible_network_os: eos
+        # ansible_httpapi_port: 443
+# Use this section if you want to perform testing via the CLI through SSH
         ansible_connection: network_cli
         ansible_network_os: eos
-        ansible_become: yes
-        ansible_become_method: enable
+        # ansible_become: yes
+        # ansible_become_method: enable
       children:
         SPINES:
           vars:
@@ -30,6 +37,8 @@ all:
               ansible_host: 192.168.0.11
             spine2:
               ansible_host: 192.168.0.12
+            spine3:
+              ansible_host: 192.168.0.13
         LEAFS:
           vars: 
             type: l3leaf
@@ -42,9 +51,9 @@ all:
               ansible_host: 192.168.0.23
             leaf4:
               ansible_host: 192.168.0.24
-        NETWORK_SERVICES:
+        EVPN_SERVICES:
           children:
             LEAFS:
-        CONNECTED_ENDPOINTS:
+        HOST_CONNECT:
           children:
             LEAFS:

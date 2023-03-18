@@ -1,5 +1,5 @@
 ---
-- name: Run AVD
+- name: Deploy fabric to CVP
   hosts: cvp1
   tasks:
     - name: provision CVP with AVD configuration

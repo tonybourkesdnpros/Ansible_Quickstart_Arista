@@ -24,14 +24,18 @@ CVP_DEVICES:
     parentContainerName: SPINES
     configlets:
       - AVD_spine2
+  - fqdn: spine3
+    parentContainerName: SPINES
+    configlets:
+      - AVD_spine3
 CVP_CONTAINERS:
-  CONNECTED_ENDPOINTS:
+  EVPN_SERVICES:
     parentContainerName: FABRIC
   FABRIC:
     parentContainerName: Tenant
-  LEAFS:
+  HOST_CONNECT:
     parentContainerName: FABRIC
-  NETWORK_SERVICES:
+  LEAFS:
     parentContainerName: FABRIC
   SPINES:
     parentContainerName: FABRIC
