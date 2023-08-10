@@ -82,10 +82,10 @@ l3leaf:
 p2p_uplinks_mtu: 1500
 
 # BFD Settings
-# bfd_multihop:
-#   interval: 1200
-#   min_rx: 1200
-#   multiplier: 3
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
 
 
 # # If you want to put a password on peers
@@ -98,6 +98,10 @@ p2p_uplinks_mtu: 1500
 #   mlag_ipv4_underlay_peer:
 #     password: 4b21pAdCvWeAqpcKDFMdWw==
 
+# Needed for vEOS/cEOS
+
+bgp_update_wait_install: false
+bgp_update_wait_for_convergence: false
 
 # Needed for Arista ATD Lab Environment
 dns_domain: atd.lab

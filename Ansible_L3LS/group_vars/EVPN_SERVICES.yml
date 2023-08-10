@@ -6,9 +6,6 @@ tenants:
       - name: VRF_A
         vrf_vni: 10
         svis:
-          # - id: 5
-          #   name: WAN
-          #   enabled: true
           - id: 10
             # SVI Description
             name: DMZ

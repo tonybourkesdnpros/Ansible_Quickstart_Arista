@@ -267,7 +267,6 @@ ip route 0.0.0.0/0 192.168.0.1
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-| update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
@@ -321,7 +320,6 @@ ip route 0.0.0.0/0 192.168.0.1
 router bgp 65001
    router-id 192.168.101.13
    maximum-paths 4 ecmp 4
-   update wait-install
    no bgp default ipv4-unicast
    no bgp default ipv4-unicast
    distance bgp 20 200 200
@@ -377,14 +375,14 @@ router bgp 65001
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
+| 1200 | 1200 | 3 |
 
 #### Router BFD Device Configuration
 
 ```eos
 !
 router bfd
-   multihop interval 300 min-rx 300 multiplier 3
+   multihop interval 1200 min-rx 1200 multiplier 3
 ```
 
 ## Filters

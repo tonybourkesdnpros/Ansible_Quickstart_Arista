@@ -1,3 +1,4 @@
+hostname: leaf2
 router_bgp:
   as: '65100'
   router_id: 192.168.101.2
@@ -12,8 +13,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  updates:
-    wait_install: true
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -103,8 +102,6 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-    updates:
-      wait_install: true
   vlans:
   - id: 10
     tenant: ACME
@@ -334,8 +331,8 @@ prefix_lists:
     action: permit 192.168.102.0/24 eq 32
 router_bfd:
   multihop:
-    interval: 300
-    min_rx: 300
+    interval: 1200
+    min_rx: 1200
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true

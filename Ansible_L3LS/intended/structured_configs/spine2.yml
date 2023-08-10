@@ -1,3 +1,4 @@
+hostname: spine2
 router_bgp:
   as: '65001'
   router_id: 192.168.101.12
@@ -10,8 +11,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  updates:
-    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -155,6 +154,6 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
-    interval: 300
-    min_rx: 300
+    interval: 1200
+    min_rx: 1200
     multiplier: 3
