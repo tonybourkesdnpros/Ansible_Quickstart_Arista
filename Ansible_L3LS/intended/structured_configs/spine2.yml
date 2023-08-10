@@ -1,4 +1,3 @@
-hostname: spine2
 router_bgp:
   as: '65001'
   router_id: 192.168.101.12
