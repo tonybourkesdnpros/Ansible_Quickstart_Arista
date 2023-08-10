@@ -1,0 +1,58 @@
+
+# Spine Switches
+spine:
+  defaults:
+#    platform: vEOS-LAB # 
+    bgp_as: 65002
+    loopback_ipv4_pool: 192.168.201.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+    mlag: false
+  nodes:
+    spine3:
+      id: 13
+      mgmt_ip: 192.168.0.13/24
+    spine4:
+      id: 14
+      mgmt_ip: 192.168.0.14/24
+
+# Leaf switches. Most leafs will be l3leaf, not l2leaf.
+l3leaf:
+  defaults:
+    bgp_as: 65200-65299 # Gives a range which will be auto-assigned
+#    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.201.0/24 # This is loopback0 (underlay)
+    vtep_loopback_ipv4_pool: 192.168.202.0/24 # This is loopback1 (VTEP)
+    uplink_interfaces: [ Ethernet5, Ethernet6] # Leaf uplinks
+    uplink_switches: [spine3, spine4] # Where the leaf uplinks go
+    uplink_ipv4_pool: 192.168.203.0/24 # For the p2p interfaces to chopped up into /31s
+    mlag_interfaces: [Ethernet1, Ethernet2] # MLAG peer link
+    mlag_peer_ipv4_pool: 10.255.252.0/24 # MLAG peer IPs
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # iBGP peering between MLAG peers
+    virtual_router_mac_address: 00:1c:73:00:00:99 # The vMAC for the anycast gateways
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    spanning_tree_mode: mstp # Spanning Tree is still enabled even in EVPN setups
+    spanning_tree_priority: 16384 
+    mlag: true # By default, use MLAG
+  nodes:
+    - name: borderleaf2
+      id: 6
+      mgmt_ip: 192.168.0.26/24
+      uplink_switch_interfaces: [Ethernet8]
+  node_groups:
+    mlag2:
+      nodes:
+        leaf3:
+          id: 3
+          mgmt_ip: 192.168.0.23/24
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
+        leaf4:
+          id: 4
+          mgmt_ip: 192.168.0.24/24
+          uplink_switch_interfaces: [Ethernet6, Ethernet6]
+    
