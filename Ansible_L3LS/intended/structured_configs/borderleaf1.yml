@@ -1,7 +1,7 @@
-hostname: leaf3
+hostname: borderleaf1
 router_bgp:
-  as: '65102'
-  router_id: 192.168.101.3
+  as: '65191'
+  router_id: 192.168.101.5
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -14,14 +14,6 @@ router_bgp:
     paths: 4
     ecmp: 4
   peer_groups:
-  - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
-    remote_as: '65102'
-    next_hop_self: true
-    description: leaf4
-    maximum_routes: 12000
-    send_community: all
-    route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
     maximum_routes: 12000
@@ -35,32 +27,30 @@ router_bgp:
     ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
-    - name: MLAG-IPv4-UNDERLAY-PEER
-      activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - ip_address: 10.255.251.5
-    peer_group: MLAG-IPv4-UNDERLAY-PEER
-    description: leaf4
-  - ip_address: 192.168.103.16
+  - ip_address: 192.168.103.32
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    description: spine1_Ethernet5
-  - ip_address: 192.168.103.18
+    description: spine1_Ethernet7
+  - ip_address: 192.168.103.34
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    description: spine2_Ethernet5
-  - ip_address: 192.168.103.20
+    description: spine2_Ethernet7
+  - ip_address: 192.168.103.36
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    description: spine3_Ethernet5
-  - ip_address: 192.168.103.22
+    description: spine3_Ethernet7
+  - ip_address: 192.168.103.38
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    description: spine4_Ethernet5
+    description: spine4_Ethernet7
   - ip_address: 192.168.101.11
     peer_group: EVPN-OVERLAY-PEERS
     description: spine1
@@ -77,17 +67,14 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: spine4
     remote_as: '65001'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
   vrfs:
   - name: VRF_A
-    router_id: 192.168.101.3
-    rd: 192.168.101.3:10
+    router_id: 192.168.101.5
+    rd: 192.168.101.5:10
     route_targets:
       import:
       - address_family: evpn
@@ -99,13 +86,17 @@ router_bgp:
         - '10:10'
     redistribute_routes:
     - source_protocol: connected
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.1.3.254
+        activate: true
     neighbors:
-    - ip_address: 10.255.251.5
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
+    - ip_address: 10.1.3.254
+      remote_as: '1'
   vlans:
   - id: 10
     tenant: ACME
-    rd: 192.168.101.3:10010
+    rd: 192.168.101.5:10010
     route_targets:
       both:
       - 10010:10010
@@ -113,7 +104,7 @@ router_bgp:
     - learned
   - id: 20
     tenant: ACME
-    rd: 192.168.101.3:10020
+    rd: 192.168.101.5:10020
     route_targets:
       both:
       - 10020:10020
@@ -135,7 +126,6 @@ spanning_tree:
   mst_instances:
   - id: '0'
     priority: 16384
-  no_spanning_tree_vlan: 4093-4094
 vrfs:
 - name: default
   ip_routing: false
@@ -147,47 +137,95 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: default
-  ip_address: 192.168.0.23/24
+  ip_address: 192.168.0.25/24
   gateway: 192.168.0.1
   type: oob
 management_api_http:
   enable_vrfs:
   - name: default
   enable_https: true
+ethernet_interfaces:
+- name: Ethernet3
+  peer: spine1
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_SPINE1_Ethernet7
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.33/31
+- name: Ethernet4
+  peer: spine2
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_SPINE2_Ethernet7
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.35/31
+- name: Ethernet5
+  peer: spine3
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_SPINE3_Ethernet7
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.37/31
+- name: Ethernet6
+  peer: spine4
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_SPINE4_Ethernet7
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 192.168.103.39/31
+- name: Ethernet7
+  peer_type: l3_interface
+  ip_address: 10.1.3.1/24
+  shutdown: false
+  type: routed
+  vrf: VRF_A
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.101.5/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 192.168.102.5/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.101.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.102.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 vlans:
-- id: 4093
-  tenant: system
-  name: LEAF_PEER_L3
-  trunk_groups:
-  - LEAF_PEER_L3
-- id: 4094
-  tenant: system
-  name: MLAG_PEER
-  trunk_groups:
-  - MLAG
 - id: 10
   name: DMZ
   tenant: ACME
 - id: 20
   name: Internal
   tenant: ACME
-- id: 3009
-  name: MLAG_iBGP_VRF_A
-  trunk_groups:
-  - LEAF_PEER_L3
-  tenant: ACME
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vlan_interfaces:
-- name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
-  shutdown: false
-  mtu: 1500
-  ip_address: 10.255.251.4/31
-- name: Vlan4094
-  description: MLAG_PEER
-  shutdown: false
-  ip_address: 10.255.252.4/31
-  no_autostate: true
-  mtu: 1500
 - name: Vlan10
   tenant: ACME
   description: DMZ
@@ -200,132 +238,12 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.20.1/24
   vrf: VRF_A
-- name: Vlan3009
-  tenant: ACME
-  type: underlay_peering
-  shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF_A'
-  vrf: VRF_A
-  mtu: 1500
-  ip_address: 10.255.251.4/31
-port_channel_interfaces:
-- name: Port-Channel1
-  description: MLAG_PEER_leaf4_Po1
-  type: switched
-  shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
-ethernet_interfaces:
-- name: Ethernet1
-  peer: leaf4
-  peer_interface: Ethernet1
-  peer_type: mlag_peer
-  description: MLAG_PEER_leaf4_Ethernet1
-  type: port-channel-member
-  shutdown: false
-  channel_group:
-    id: 1
-    mode: active
-- name: Ethernet2
-  peer: leaf4
-  peer_interface: Ethernet2
-  peer_type: mlag_peer
-  description: MLAG_PEER_leaf4_Ethernet2
-  type: port-channel-member
-  shutdown: false
-  channel_group:
-    id: 1
-    mode: active
-- name: Ethernet3
-  peer: spine1
-  peer_interface: Ethernet5
-  peer_type: spine
-  description: P2P_LINK_TO_SPINE1_Ethernet5
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 192.168.103.17/31
-- name: Ethernet4
-  peer: spine2
-  peer_interface: Ethernet5
-  peer_type: spine
-  description: P2P_LINK_TO_SPINE2_Ethernet5
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 192.168.103.19/31
-- name: Ethernet5
-  peer: spine3
-  peer_interface: Ethernet5
-  peer_type: spine
-  description: P2P_LINK_TO_SPINE3_Ethernet5
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 192.168.103.21/31
-- name: Ethernet6
-  peer: spine4
-  peer_interface: Ethernet5
-  peer_type: spine
-  description: P2P_LINK_TO_SPINE4_Ethernet5
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 192.168.103.23/31
-mlag_configuration:
-  domain_id: mlag2
-  local_interface: Vlan4094
-  peer_address: 10.255.252.5
-  peer_link: Port-Channel1
-  reload_delay_mlag: '300'
-  reload_delay_non_mlag: '330'
-route_maps:
-- name: RM-MLAG-PEER-IN
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - origin incomplete
-    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-loopback_interfaces:
-- name: Loopback0
-  description: EVPN_Overlay_Peering
-  shutdown: false
-  ip_address: 192.168.101.3/32
-- name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
-  shutdown: false
-  ip_address: 192.168.102.3/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.101.0/24 eq 32
-  - sequence: 20
-    action: permit 192.168.102.0/24 eq 32
-router_bfd:
-  multihop:
-    interval: 1200
-    min_rx: 1200
-    multiplier: 3
-ip_igmp_snooping:
-  globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vxlan_interface:
   Vxlan1:
-    description: leaf3_VTEP
+    description: borderleaf1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
-      virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
       - id: 10
         vni: 10010
