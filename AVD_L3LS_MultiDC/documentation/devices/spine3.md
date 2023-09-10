@@ -40,19 +40,19 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | default | 192.168.0.13/24 | 192.168.0.1 |
+| Management0 | oob_management | oob | default | 192.168.0.13/24 | 192.168.0.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | default | - | - |
+| Management0 | oob_management | oob | default | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management1
+interface Management0
    description oob_management
    no shutdown
    ip address 192.168.0.13/24
@@ -140,9 +140,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_LEAF3_Ethernet5 | routed | - | 192.168.203.8/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_LEAF4_Ethernet5 | routed | - | 192.168.203.12/31 | default | 1500 | False | - | - |
-| Ethernet8 | P2P_LINK_TO_BORDERLEAF2_Ethernet3 | routed | - | 192.168.203.20/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_LEAF3_Ethernet5 | routed | - | 192.168.203.8/31 | default | 1550 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_LEAF4_Ethernet5 | routed | - | 192.168.203.12/31 | default | 1550 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_BORDERLEAF2_Ethernet5 | routed | - | 192.168.203.20/31 | default | 1550 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -151,21 +151,21 @@ vlan internal order ascending range 1006 1199
 interface Ethernet5
    description P2P_LINK_TO_LEAF3_Ethernet5
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 192.168.203.8/31
 !
 interface Ethernet6
    description P2P_LINK_TO_LEAF4_Ethernet5
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 192.168.203.12/31
 !
 interface Ethernet8
-   description P2P_LINK_TO_BORDERLEAF2_Ethernet3
+   description P2P_LINK_TO_BORDERLEAF2_Ethernet5
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 192.168.203.20/31
 ```
@@ -258,9 +258,6 @@ ip route 0.0.0.0/0 192.168.0.1
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| update wait-install |
-| no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
@@ -313,10 +310,7 @@ ip route 0.0.0.0/0 192.168.0.1
 router bgp 65002
    router-id 192.168.201.13
    maximum-paths 4 ecmp 4
-   update wait-install
    no bgp default ipv4-unicast
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -350,7 +344,7 @@ router bgp 65002
    neighbor 192.168.203.13 description leaf4_Ethernet5
    neighbor 192.168.203.21 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.203.21 remote-as 65299
-   neighbor 192.168.203.21 description borderleaf2_Ethernet3
+   neighbor 192.168.203.21 description borderleaf2_Ethernet5
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

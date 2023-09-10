@@ -48,19 +48,19 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | default | 192.168.0.26/24 | 192.168.0.1 |
+| Management0 | oob_management | oob | default | 192.168.0.26/24 | 192.168.0.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | default | - | - |
+| Management0 | oob_management | oob | default | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management1
+interface Management0
    description oob_management
    no shutdown
    ip address 192.168.0.26/24
@@ -175,10 +175,10 @@ vlan 20
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_borderleaf1_Ethernet1 | routed | - | 172.31.252.1/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_borderleaf1_Ethernet2 | routed | - | 172.31.252.3/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_SPINE3_Ethernet8 | routed | - | 192.168.203.21/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_SPINE4_Ethernet8 | routed | - | 192.168.203.23/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_borderleaf1_Ethernet1 | routed | - | 172.31.252.1/31 | default | 1550 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_borderleaf1_Ethernet2 | routed | - | 172.31.252.3/31 | default | 1550 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_SPINE3_Ethernet8 | routed | - | 192.168.203.21/31 | default | 1550 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_SPINE4_Ethernet8 | routed | - | 192.168.203.23/31 | default | 1550 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -187,28 +187,28 @@ vlan 20
 interface Ethernet1
    description P2P_LINK_TO_borderleaf1_Ethernet1
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 172.31.252.1/31
 !
 interface Ethernet2
    description P2P_LINK_TO_borderleaf1_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 172.31.252.3/31
 !
-interface Ethernet3
+interface Ethernet5
    description P2P_LINK_TO_SPINE3_Ethernet8
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 192.168.203.21/31
 !
-interface Ethernet4
+interface Ethernet6
    description P2P_LINK_TO_SPINE4_Ethernet8
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 192.168.203.23/31
 ```
@@ -392,11 +392,6 @@ ip route 0.0.0.0/0 192.168.0.1
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| update wait-install |
-| no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
@@ -458,12 +453,7 @@ ip route 0.0.0.0/0 192.168.0.1
 router bgp 65299
    router-id 192.168.201.6
    maximum-paths 4 ecmp 4
-   update wait-install
    no bgp default ipv4-unicast
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd

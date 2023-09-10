@@ -2,17 +2,12 @@ hostname: spine1
 router_bgp:
   as: '65001'
   router_id: 192.168.101.11
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
   bgp:
     default:
       ipv4_unicast: false
   maximum_paths:
     paths: 4
     ecmp: 4
-  updates:
-    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -89,7 +84,7 @@ vrfs:
 - name: default
   ip_routing: false
 management_interfaces:
-- name: Management1
+- name: Management0
   description: oob_management
   shutdown: false
   vrf: default
@@ -107,7 +102,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_LEAF1_Ethernet3
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.103.0/31
 - name: Ethernet4
@@ -116,7 +111,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_LEAF2_Ethernet3
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.103.4/31
 - name: Ethernet7
@@ -125,7 +120,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_BORDERLEAF1_Ethernet3
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.103.16/31
 loopback_interfaces:

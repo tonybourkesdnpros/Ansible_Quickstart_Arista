@@ -2,19 +2,12 @@ hostname: borderleaf2
 router_bgp:
   as: '65299'
   router_id: 192.168.201.6
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   bgp:
     default:
       ipv4_unicast: false
   maximum_paths:
     paths: 4
     ecmp: 4
-  updates:
-    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -112,7 +105,7 @@ vrfs:
   tenant: ACME
   ip_routing: true
 management_interfaces:
-- name: Management1
+- name: Management0
   description: oob_management
   shutdown: false
   vrf: default
@@ -124,22 +117,22 @@ management_api_http:
   - name: default
   enable_https: true
 ethernet_interfaces:
-- name: Ethernet3
+- name: Ethernet5
   peer: spine3
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_SPINE3_Ethernet8
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.203.21/31
-- name: Ethernet4
+- name: Ethernet6
   peer: spine4
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_SPINE4_Ethernet8
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.203.23/31
 - name: Ethernet1
@@ -149,7 +142,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_borderleaf1_Ethernet1
   type: routed
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   ip_address: 172.31.252.1/31
 - name: Ethernet2
   peer: borderleaf1
@@ -158,7 +151,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_borderleaf1_Ethernet2
   type: routed
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   ip_address: 172.31.252.3/31
 loopback_interfaces:
 - name: Loopback0

@@ -17,16 +17,16 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| FABRIC | l3leaf | borderleaf1 | 192.168.0.25/24 | - | Provisioned | - |
-| FABRIC | l3leaf | borderleaf2 | 192.168.0.26/24 | - | Provisioned | - |
-| FABRIC | l3leaf | leaf1 | 192.168.0.21/24 | - | Provisioned | - |
-| FABRIC | l3leaf | leaf2 | 192.168.0.22/24 | - | Provisioned | - |
-| FABRIC | l3leaf | leaf3 | 192.168.0.23/24 | - | Provisioned | - |
-| FABRIC | l3leaf | leaf4 | 192.168.0.24/24 | - | Provisioned | - |
-| FABRIC | spine | spine1 | 192.168.0.11/24 | - | Provisioned | - |
-| FABRIC | spine | spine2 | 192.168.0.12/24 | - | Provisioned | - |
-| FABRIC | spine | spine3 | 192.168.0.13/24 | - | Provisioned | - |
-| FABRIC | spine | spine4 | 192.168.0.14/24 | - | Provisioned | - |
+| FABRIC | l3leaf | borderleaf1 | 192.168.0.25/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | borderleaf2 | 192.168.0.26/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | leaf1 | 192.168.0.21/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | leaf2 | 192.168.0.22/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | leaf3 | 192.168.0.23/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | leaf4 | 192.168.0.24/24 | cEOS | Provisioned | - |
+| FABRIC | spine | spine1 | 192.168.0.11/24 | cEOS | Provisioned | - |
+| FABRIC | spine | spine2 | 192.168.0.12/24 | cEOS | Provisioned | - |
+| FABRIC | spine | spine3 | 192.168.0.13/24 | cEOS | Provisioned | - |
+| FABRIC | spine | spine4 | 192.168.0.14/24 | cEOS | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -43,8 +43,8 @@
 | l3leaf | borderleaf1 | Ethernet2 | l3leaf | borderleaf2 | Ethernet2 |
 | l3leaf | borderleaf1 | Ethernet3 | spine | spine1 | Ethernet7 |
 | l3leaf | borderleaf1 | Ethernet4 | spine | spine2 | Ethernet7 |
-| l3leaf | borderleaf2 | Ethernet3 | spine | spine3 | Ethernet8 |
-| l3leaf | borderleaf2 | Ethernet4 | spine | spine4 | Ethernet8 |
+| l3leaf | borderleaf2 | Ethernet5 | spine | spine3 | Ethernet8 |
+| l3leaf | borderleaf2 | Ethernet6 | spine | spine4 | Ethernet8 |
 | l3leaf | leaf1 | Ethernet1 | mlag_peer | leaf2 | Ethernet1 |
 | l3leaf | leaf1 | Ethernet2 | mlag_peer | leaf2 | Ethernet2 |
 | l3leaf | leaf1 | Ethernet3 | spine | spine1 | Ethernet3 |
@@ -75,8 +75,8 @@
 | borderleaf1 | Ethernet2 | 172.31.252.2/31 | borderleaf2 | Ethernet2 | 172.31.252.3/31 |
 | borderleaf1 | Ethernet3 | 192.168.103.17/31 | spine1 | Ethernet7 | 192.168.103.16/31 |
 | borderleaf1 | Ethernet4 | 192.168.103.19/31 | spine2 | Ethernet7 | 192.168.103.18/31 |
-| borderleaf2 | Ethernet3 | 192.168.203.21/31 | spine3 | Ethernet8 | 192.168.203.20/31 |
-| borderleaf2 | Ethernet4 | 192.168.203.23/31 | spine4 | Ethernet8 | 192.168.203.22/31 |
+| borderleaf2 | Ethernet5 | 192.168.203.21/31 | spine3 | Ethernet8 | 192.168.203.20/31 |
+| borderleaf2 | Ethernet6 | 192.168.203.23/31 | spine4 | Ethernet8 | 192.168.203.22/31 |
 | leaf1 | Ethernet3 | 192.168.103.1/31 | spine1 | Ethernet3 | 192.168.103.0/31 |
 | leaf1 | Ethernet4 | 192.168.103.3/31 | spine2 | Ethernet3 | 192.168.103.2/31 |
 | leaf2 | Ethernet3 | 192.168.103.5/31 | spine1 | Ethernet4 | 192.168.103.4/31 |

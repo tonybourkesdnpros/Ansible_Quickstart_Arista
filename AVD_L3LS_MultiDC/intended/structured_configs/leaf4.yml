@@ -2,19 +2,12 @@ hostname: leaf4
 router_bgp:
   as: '65202'
   router_id: 192.168.201.4
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   bgp:
     default:
       ipv4_unicast: false
   maximum_paths:
     paths: 4
     ecmp: 4
-  updates:
-    wait_install: true
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -88,8 +81,6 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.4
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-    updates:
-      wait_install: true
   vlan_aware_bundles:
   - name: VRF_A
     rd: 192.168.201.4:10
@@ -123,7 +114,7 @@ vrfs:
   tenant: ACME
   ip_routing: true
 management_interfaces:
-- name: Management1
+- name: Management0
   description: oob_management
   shutdown: false
   vrf: default
@@ -160,14 +151,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   ip_address: 10.255.251.5/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.5/31
   no_autostate: true
-  mtu: 1500
+  mtu: 1550
 - name: Vlan10
   tenant: ACME
   description: DMZ
@@ -186,7 +177,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf VRF_A'
   vrf: VRF_A
-  mtu: 1500
+  mtu: 1550
   ip_address: 10.255.251.5/31
 port_channel_interfaces:
 - name: Port-Channel1
@@ -232,7 +223,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_SPINE3_Ethernet6
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.203.13/31
 - name: Ethernet6
@@ -241,7 +232,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_SPINE4_Ethernet6
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.203.15/31
 - name: Ethernet7

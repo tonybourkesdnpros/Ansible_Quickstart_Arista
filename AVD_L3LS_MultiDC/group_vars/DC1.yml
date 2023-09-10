@@ -2,12 +2,12 @@
 # Spine Switches
 spine:
   defaults:
-#    platform: vEOS-LAB # 
+    platform: cEOS
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.101.0/24
-    bgp_defaults:
-      - 'no bgp default ipv4-unicast'
-      - 'distance bgp 20 200 200'
+    # bgp_defaults:
+    #   - 'no bgp default ipv4-unicast'
+    #   - 'distance bgp 20 200 200'
     mlag: false
   nodes:
     spine1:
@@ -23,8 +23,8 @@ spine:
 # Leaf switches. Most leafs will be l3leaf, not l2leaf.
 l3leaf:
   defaults:
-    bgp_as: 65100-65199 # Gives a range which will be auto-assigned
-#    platform: vEOS-LAB
+    bgp_as: 65100-65198 # Gives a range which will be auto-assigned
+    platform: cEOS
     loopback_ipv4_pool: 192.168.101.0/24 # This is loopback0 (underlay)
     vtep_loopback_ipv4_pool: 192.168.102.0/24 # This is loopback1 (VTEP)
     uplink_interfaces: [Ethernet3, Ethernet4] # Leaf uplinks

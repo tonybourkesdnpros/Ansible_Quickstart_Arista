@@ -52,19 +52,19 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | default | 192.168.0.22/24 | 192.168.0.1 |
+| Management0 | oob_management | oob | default | 192.168.0.22/24 | 192.168.0.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | default | - | - |
+| Management0 | oob_management | oob | default | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management1
+interface Management0
    description oob_management
    no shutdown
    ip address 192.168.0.22/24
@@ -225,8 +225,8 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet3 | P2P_LINK_TO_SPINE1_Ethernet4 | routed | - | 192.168.103.5/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_SPINE2_Ethernet4 | routed | - | 192.168.103.7/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_SPINE1_Ethernet4 | routed | - | 192.168.103.5/31 | default | 1550 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_SPINE2_Ethernet4 | routed | - | 192.168.103.7/31 | default | 1550 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -245,14 +245,14 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_SPINE1_Ethernet4
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 192.168.103.5/31
 !
 interface Ethernet4
    description P2P_LINK_TO_SPINE2_Ethernet4
    no shutdown
-   mtu 1500
+   mtu 1550
    no switchport
    ip address 192.168.103.7/31
 !
@@ -336,9 +336,9 @@ interface Loopback1
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan10 | DMZ | VRF_A | - | False |
 | Vlan20 | Internal | VRF_A | - | False |
-| Vlan3009 | MLAG_PEER_L3_iBGP: vrf VRF_A | VRF_A | 1500 | False |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan3009 | MLAG_PEER_L3_iBGP: vrf VRF_A | VRF_A | 1550 | False |
+| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1550 | False |
+| Vlan4094 | MLAG_PEER | default | 1550 | False |
 
 ##### IPv4
 
@@ -369,20 +369,20 @@ interface Vlan20
 interface Vlan3009
    description MLAG_PEER_L3_iBGP: vrf VRF_A
    no shutdown
-   mtu 1500
+   mtu 1550
    vrf VRF_A
    ip address 10.255.251.1/31
 !
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
    no shutdown
-   mtu 1500
+   mtu 1550
    ip address 10.255.251.1/31
 !
 interface Vlan4094
    description MLAG_PEER
    no shutdown
-   mtu 1500
+   mtu 1550
    no autostate
    ip address 10.255.252.1/31
 ```
@@ -501,11 +501,6 @@ ip route 0.0.0.0/0 192.168.0.1
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| update wait-install |
-| no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
@@ -577,12 +572,7 @@ ip route 0.0.0.0/0 192.168.0.1
 router bgp 65100
    router-id 192.168.101.2
    maximum-paths 4 ecmp 4
-   update wait-install
    no bgp default ipv4-unicast
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -634,7 +624,6 @@ router bgp 65100
       route-target import evpn 10:10
       route-target export evpn 10:10
       router-id 192.168.101.2
-      update wait-install
       neighbor 10.255.251.0 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
 ```

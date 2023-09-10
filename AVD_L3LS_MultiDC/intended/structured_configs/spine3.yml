@@ -2,17 +2,12 @@ hostname: spine3
 router_bgp:
   as: '65002'
   router_id: 192.168.201.13
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
   bgp:
     default:
       ipv4_unicast: false
   maximum_paths:
     paths: 4
     ecmp: 4
-  updates:
-    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -47,7 +42,7 @@ router_bgp:
   - ip_address: 192.168.203.21
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65299'
-    description: borderleaf2_Ethernet3
+    description: borderleaf2_Ethernet5
   - ip_address: 192.168.101.11
     peer_group: EVPN-OVERLAY-PEERS
     description: spine1
@@ -89,7 +84,7 @@ vrfs:
 - name: default
   ip_routing: false
 management_interfaces:
-- name: Management1
+- name: Management0
   description: oob_management
   shutdown: false
   vrf: default
@@ -107,7 +102,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_LEAF3_Ethernet5
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.203.8/31
 - name: Ethernet6
@@ -116,16 +111,16 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_LEAF4_Ethernet5
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.203.12/31
 - name: Ethernet8
   peer: borderleaf2
-  peer_interface: Ethernet3
+  peer_interface: Ethernet5
   peer_type: l3leaf
-  description: P2P_LINK_TO_BORDERLEAF2_Ethernet3
+  description: P2P_LINK_TO_BORDERLEAF2_Ethernet5
   shutdown: false
-  mtu: 1500
+  mtu: 1550
   type: routed
   ip_address: 192.168.203.20/31
 loopback_interfaces:

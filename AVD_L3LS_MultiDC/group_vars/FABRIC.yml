@@ -8,9 +8,8 @@ fabric_name: FABRIC
 evpn_vlan_aware_bundles: true
 
 
-
-# There's an issue with vEOS with larger MTUs
-p2p_uplinks_mtu: 1500
+# Support 1500 byte MTU with hosts + 50 bytes for VXLAN overhead
+p2p_uplinks_mtu: 1550
 
 # BFD Settings
 # bfd_multihop:
@@ -32,7 +31,7 @@ p2p_uplinks_mtu: 1500
 
 # Needed for Arista ATD Lab Environment
 dns_domain: atd.lab
-mgmt_interface: Management1
+mgmt_interface: MGMT
 mgmt_interface_vrf: default
 mgmt_gateway: 192.168.0.1
 
