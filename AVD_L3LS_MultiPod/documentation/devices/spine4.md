@@ -142,8 +142,8 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet5 | P2P_LINK_TO_LEAF3_Ethernet6 | routed | - | 192.168.103.10/31 | default | 1500 | False | - | - |
 | Ethernet6 | P2P_LINK_TO_LEAF4_Ethernet6 | routed | - | 192.168.103.14/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_SUPERSPINE1_Ethernet6 | routed | - | 192.168.103.53/31 | default | 1500 | False | - | - |
-| Ethernet8 | P2P_LINK_TO_SUPERSPINE2_Ethernet6 | routed | - | 192.168.103.55/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_BORDERLEAF1_Ethernet6 | routed | - | 192.168.103.53/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_BORDERLEAF2_Ethernet6 | routed | - | 192.168.103.55/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -164,14 +164,14 @@ interface Ethernet6
    ip address 192.168.103.14/31
 !
 interface Ethernet7
-   description P2P_LINK_TO_SUPERSPINE1_Ethernet6
+   description P2P_LINK_TO_BORDERLEAF1_Ethernet6
    no shutdown
    mtu 1500
    no switchport
    ip address 192.168.103.53/31
 !
 interface Ethernet8
-   description P2P_LINK_TO_SUPERSPINE2_Ethernet6
+   description P2P_LINK_TO_BORDERLEAF2_Ethernet6
    no shutdown
    mtu 1500
    no switchport
@@ -341,10 +341,10 @@ router bgp 65002
    neighbor 192.168.101.4 description leaf4
    neighbor 192.168.101.201 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.201 remote-as 65000
-   neighbor 192.168.101.201 description superspine1
+   neighbor 192.168.101.201 description borderleaf1
    neighbor 192.168.101.202 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.202 remote-as 65000
-   neighbor 192.168.101.202 description superspine2
+   neighbor 192.168.101.202 description borderleaf2
    neighbor 192.168.103.11 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.103.11 remote-as 65102
    neighbor 192.168.103.11 description leaf3_Ethernet6
@@ -353,10 +353,10 @@ router bgp 65002
    neighbor 192.168.103.15 description leaf4_Ethernet6
    neighbor 192.168.103.52 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.103.52 remote-as 65000
-   neighbor 192.168.103.52 description superspine1_Ethernet6
+   neighbor 192.168.103.52 description borderleaf1_Ethernet6
    neighbor 192.168.103.54 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.103.54 remote-as 65000
-   neighbor 192.168.103.54 description superspine2_Ethernet6
+   neighbor 192.168.103.54 description borderleaf2_Ethernet6
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

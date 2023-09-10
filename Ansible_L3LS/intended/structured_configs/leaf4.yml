@@ -187,6 +187,16 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   vrf: VRF_A
+- name: Ethernet7
+  peer: host3
+  peer_interface: Ethernet2
+  peer_type: server
+  description: host3_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 7
+    mode: active
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -252,3 +262,11 @@ vxlan_interface:
       vrfs:
       - name: VRF_A
         vni: 10
+port_channel_interfaces:
+- name: Port-Channel7
+  description: host3_PortChannel host3
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '20'
+  spanning_tree_portfast: edge

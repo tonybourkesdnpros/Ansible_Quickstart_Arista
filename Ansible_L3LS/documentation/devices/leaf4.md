@@ -17,6 +17,7 @@
   - [VLANs Device Configuration](#vlans-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
@@ -168,6 +169,7 @@ vlan 20
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet7 | host3_Ethernet2 | *access | *20 | *- | *- | 7 |
 
 *Inherited from Port-Channel Interface
 
@@ -213,11 +215,38 @@ interface Ethernet6
    no switchport
    ip address 192.168.103.31/31
 !
+interface Ethernet7
+   description host3_Ethernet2
+   no shutdown
+   channel-group 7 mode active
+!
 interface Ethernet9
    no shutdown
    no switchport
    vrf VRF_A
    ip address 10.1.5.1/24
+```
+
+### Port-Channel Interfaces
+
+#### Port-Channel Interfaces Summary
+
+##### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel7 | host3_PortChannel host3 | switched | access | 20 | - | - | - | - | - | - |
+
+#### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel7
+   description host3_PortChannel host3
+   no shutdown
+   switchport
+   switchport access vlan 20
+   spanning-tree portfast
 ```
 
 ### Loopback Interfaces

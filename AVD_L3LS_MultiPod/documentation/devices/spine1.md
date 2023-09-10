@@ -142,8 +142,8 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet3 | P2P_LINK_TO_LEAF1_Ethernet3 | routed | - | 192.168.103.0/31 | default | 1500 | False | - | - |
 | Ethernet4 | P2P_LINK_TO_LEAF2_Ethernet3 | routed | - | 192.168.103.4/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_SUPERSPINE1_Ethernet3 | routed | - | 192.168.103.41/31 | default | 1500 | False | - | - |
-| Ethernet8 | P2P_LINK_TO_SUPERSPINE2_Ethernet3 | routed | - | 192.168.103.43/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_BORDERLEAF1_Ethernet3 | routed | - | 192.168.103.41/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_BORDERLEAF2_Ethernet3 | routed | - | 192.168.103.43/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -164,14 +164,14 @@ interface Ethernet4
    ip address 192.168.103.4/31
 !
 interface Ethernet7
-   description P2P_LINK_TO_SUPERSPINE1_Ethernet3
+   description P2P_LINK_TO_BORDERLEAF1_Ethernet3
    no shutdown
    mtu 1500
    no switchport
    ip address 192.168.103.41/31
 !
 interface Ethernet8
-   description P2P_LINK_TO_SUPERSPINE2_Ethernet3
+   description P2P_LINK_TO_BORDERLEAF2_Ethernet3
    no shutdown
    mtu 1500
    no switchport
@@ -341,10 +341,10 @@ router bgp 65001
    neighbor 192.168.101.2 description leaf2
    neighbor 192.168.101.201 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.201 remote-as 65000
-   neighbor 192.168.101.201 description superspine1
+   neighbor 192.168.101.201 description borderleaf1
    neighbor 192.168.101.202 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.202 remote-as 65000
-   neighbor 192.168.101.202 description superspine2
+   neighbor 192.168.101.202 description borderleaf2
    neighbor 192.168.103.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.103.1 remote-as 65100
    neighbor 192.168.103.1 description leaf1_Ethernet3
@@ -353,10 +353,10 @@ router bgp 65001
    neighbor 192.168.103.5 description leaf2_Ethernet3
    neighbor 192.168.103.40 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.103.40 remote-as 65000
-   neighbor 192.168.103.40 description superspine1_Ethernet3
+   neighbor 192.168.103.40 description borderleaf1_Ethernet3
    neighbor 192.168.103.42 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.103.42 remote-as 65000
-   neighbor 192.168.103.42 description superspine2_Ethernet3
+   neighbor 192.168.103.42 description borderleaf2_Ethernet3
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

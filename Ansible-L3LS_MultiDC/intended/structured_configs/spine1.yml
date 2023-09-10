@@ -46,12 +46,20 @@ router_bgp:
     description: leaf2_Ethernet3
   - ip_address: 192.168.103.17
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65104'
+    remote_as: '65199'
     description: borderleaf1_Ethernet3
+  - ip_address: 192.168.201.13
+    peer_group: EVPN-OVERLAY-PEERS
+    description: spine3
+    remote_as: '65002'
+  - ip_address: 192.168.201.14
+    peer_group: EVPN-OVERLAY-PEERS
+    description: spine4
+    remote_as: '65002'
   - ip_address: 192.168.101.5
     peer_group: EVPN-OVERLAY-PEERS
     description: borderleaf1
-    remote_as: '65104'
+    remote_as: '65199'
   - ip_address: 192.168.101.1
     peer_group: EVPN-OVERLAY-PEERS
     description: leaf1

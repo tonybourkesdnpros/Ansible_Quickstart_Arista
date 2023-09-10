@@ -9,7 +9,7 @@ spine:
       - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'
     mlag: false
-    uplink_switches: [superspine1, superspine2] # Where the leaf uplinks go
+    uplink_switches: [borderleaf1, borderleaf2] # Where the leaf uplinks go
     uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
     uplink_interfaces: [Ethernet7, Ethernet8] # Spine uplinks
 
@@ -19,13 +19,13 @@ spine:
       id: 11
       mgmt_ip: 192.168.0.11/24
       uplink_switch_interfaces: [Ethernet3, Ethernet3]
-      evpn_route_servers: [superspine1, superspine2]
+      evpn_route_servers: [borderleaf1, borderleaf2]
 
     spine2:
       id: 12
       mgmt_ip: 192.168.0.12/24
       uplink_switch_interfaces: [Ethernet4, Ethernet4]
-      evpn_route_servers: [superspine1, superspine2]
+      evpn_route_servers: [borderleaf1, borderleaf2]
 
 
 

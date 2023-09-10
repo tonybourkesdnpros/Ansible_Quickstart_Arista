@@ -39,8 +39,12 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l3leaf | borderleaf1 | Ethernet1 | l3leaf | borderleaf2 | Ethernet1 |
+| l3leaf | borderleaf1 | Ethernet2 | l3leaf | borderleaf2 | Ethernet2 |
 | l3leaf | borderleaf1 | Ethernet3 | spine | spine1 | Ethernet7 |
-| l3leaf | borderleaf2 | Ethernet5 | spine | spine3 | Ethernet8 |
+| l3leaf | borderleaf1 | Ethernet4 | spine | spine2 | Ethernet7 |
+| l3leaf | borderleaf2 | Ethernet3 | spine | spine3 | Ethernet8 |
+| l3leaf | borderleaf2 | Ethernet4 | spine | spine4 | Ethernet8 |
 | l3leaf | leaf1 | Ethernet1 | mlag_peer | leaf2 | Ethernet1 |
 | l3leaf | leaf1 | Ethernet2 | mlag_peer | leaf2 | Ethernet2 |
 | l3leaf | leaf1 | Ethernet3 | spine | spine1 | Ethernet3 |
@@ -60,15 +64,19 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.103.0/24 | 256 | 10 | 3.91 % |
-| 192.168.203.0/24 | 256 | 10 | 3.91 % |
+| 192.168.103.0/24 | 256 | 12 | 4.69 % |
+| 192.168.203.0/24 | 256 | 12 | 4.69 % |
 
 ### Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
+| borderleaf1 | Ethernet1 | 172.31.252.0/31 | borderleaf2 | Ethernet1 | 172.31.252.1/31 |
+| borderleaf1 | Ethernet2 | 172.31.252.2/31 | borderleaf2 | Ethernet2 | 172.31.252.3/31 |
 | borderleaf1 | Ethernet3 | 192.168.103.17/31 | spine1 | Ethernet7 | 192.168.103.16/31 |
-| borderleaf2 | Ethernet5 | 192.168.203.21/31 | spine3 | Ethernet8 | 192.168.203.20/31 |
+| borderleaf1 | Ethernet4 | 192.168.103.19/31 | spine2 | Ethernet7 | 192.168.103.18/31 |
+| borderleaf2 | Ethernet3 | 192.168.203.21/31 | spine3 | Ethernet8 | 192.168.203.20/31 |
+| borderleaf2 | Ethernet4 | 192.168.203.23/31 | spine4 | Ethernet8 | 192.168.203.22/31 |
 | leaf1 | Ethernet3 | 192.168.103.1/31 | spine1 | Ethernet3 | 192.168.103.0/31 |
 | leaf1 | Ethernet4 | 192.168.103.3/31 | spine2 | Ethernet3 | 192.168.103.2/31 |
 | leaf2 | Ethernet3 | 192.168.103.5/31 | spine1 | Ethernet4 | 192.168.103.4/31 |

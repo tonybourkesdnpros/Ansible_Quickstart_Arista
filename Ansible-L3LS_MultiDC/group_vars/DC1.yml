@@ -13,9 +13,12 @@ spine:
     spine1:
       id: 11
       mgmt_ip: 192.168.0.11/24
+      evpn_route_servers: [spine3, spine4]
+
     spine2:
       id: 12
       mgmt_ip: 192.168.0.12/24
+      evpn_route_servers: [spine3, spine4]
 
 # Leaf switches. Most leafs will be l3leaf, not l2leaf.
 l3leaf:
@@ -42,8 +45,10 @@ l3leaf:
   nodes:
     - name: borderleaf1
       id: 5
+      bgp_as: 65199
       mgmt_ip: 192.168.0.25/24
-      uplink_switch_interfaces: [Ethernet7]
+      uplink_switch_interfaces: [Ethernet7, Ethernet7]
+      uplink_interfaces: [ Ethernet3, Ethernet4]
   node_groups:
     mlag1:
       nodes:

@@ -45,18 +45,18 @@ router_bgp:
   - ip_address: 192.168.103.44
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    description: superspine1_Ethernet4
+    description: borderleaf1_Ethernet4
   - ip_address: 192.168.103.46
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    description: superspine2_Ethernet4
+    description: borderleaf2_Ethernet4
   - ip_address: 192.168.101.201
     peer_group: EVPN-OVERLAY-PEERS
-    description: superspine1
+    description: borderleaf1
     remote_as: '65000'
   - ip_address: 192.168.101.202
     peer_group: EVPN-OVERLAY-PEERS
-    description: superspine2
+    description: borderleaf2
     remote_as: '65000'
   - ip_address: 192.168.101.1
     peer_group: EVPN-OVERLAY-PEERS
@@ -118,19 +118,19 @@ ethernet_interfaces:
   type: routed
   ip_address: 192.168.103.6/31
 - name: Ethernet7
-  peer: superspine1
+  peer: borderleaf1
   peer_interface: Ethernet4
   peer_type: super-spine
-  description: P2P_LINK_TO_SUPERSPINE1_Ethernet4
+  description: P2P_LINK_TO_BORDERLEAF1_Ethernet4
   shutdown: false
   mtu: 1500
   type: routed
   ip_address: 192.168.103.45/31
 - name: Ethernet8
-  peer: superspine2
+  peer: borderleaf2
   peer_interface: Ethernet4
   peer_type: super-spine
-  description: P2P_LINK_TO_SUPERSPINE2_Ethernet4
+  description: P2P_LINK_TO_BORDERLEAF2_Ethernet4
   shutdown: false
   mtu: 1500
   type: routed

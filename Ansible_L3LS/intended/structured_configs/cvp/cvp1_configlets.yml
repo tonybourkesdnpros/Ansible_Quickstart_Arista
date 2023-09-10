@@ -174,13 +174,16 @@ cvp_configlets:
     model multi-agent\n!\nhostname leaf3\ndns domain atd.lab\n!\nspanning-tree mode
     mstp\nspanning-tree mst 0 priority 16384\n!\nno enable password\nno aaa root\n!\nvlan
     10\n   name DMZ\n!\nvlan 20\n   name Internal\n!\nvrf instance VRF_A\n!\ninterface
-    Ethernet3\n   description P2P_LINK_TO_SPINE1_Ethernet5\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 192.168.103.17/31\n!\ninterface Ethernet4\n
-    \  description P2P_LINK_TO_SPINE2_Ethernet5\n   no shutdown\n   mtu 1500\n   no
-    switchport\n   ip address 192.168.103.19/31\n!\ninterface Ethernet5\n   description
-    P2P_LINK_TO_SPINE3_Ethernet5\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 192.168.103.21/31\n!\ninterface Ethernet6\n   description P2P_LINK_TO_SPINE4_Ethernet5\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 192.168.103.23/31\n!\ninterface
+    Port-Channel7\n   description host3_PortChannel host3\n   no shutdown\n   switchport\n
+    \  switchport access vlan 20\n   spanning-tree portfast\n!\ninterface Ethernet3\n
+    \  description P2P_LINK_TO_SPINE1_Ethernet5\n   no shutdown\n   mtu 1500\n   no
+    switchport\n   ip address 192.168.103.17/31\n!\ninterface Ethernet4\n   description
+    P2P_LINK_TO_SPINE2_Ethernet5\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 192.168.103.19/31\n!\ninterface Ethernet5\n   description P2P_LINK_TO_SPINE3_Ethernet5\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 192.168.103.21/31\n!\ninterface
+    Ethernet6\n   description P2P_LINK_TO_SPINE4_Ethernet5\n   no shutdown\n   mtu
+    1500\n   no switchport\n   ip address 192.168.103.23/31\n!\ninterface Ethernet7\n
+    \  description host3_Ethernet1\n   no shutdown\n   channel-group 7 mode active\n!\ninterface
     Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
     192.168.101.3/32\n!\ninterface Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n
     \  no shutdown\n   ip address 192.168.102.3/32\n!\ninterface Management1\n   description
@@ -231,13 +234,16 @@ cvp_configlets:
     model multi-agent\n!\nhostname leaf4\ndns domain atd.lab\n!\nspanning-tree mode
     mstp\nspanning-tree mst 0 priority 16384\n!\nno enable password\nno aaa root\n!\nvlan
     10\n   name DMZ\n!\nvlan 20\n   name Internal\n!\nvrf instance VRF_A\n!\ninterface
-    Ethernet3\n   description P2P_LINK_TO_SPINE1_Ethernet6\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 192.168.103.25/31\n!\ninterface Ethernet4\n
-    \  description P2P_LINK_TO_SPINE2_Ethernet6\n   no shutdown\n   mtu 1500\n   no
-    switchport\n   ip address 192.168.103.27/31\n!\ninterface Ethernet5\n   description
-    P2P_LINK_TO_SPINE3_Ethernet6\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 192.168.103.29/31\n!\ninterface Ethernet6\n   description P2P_LINK_TO_SPINE4_Ethernet6\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 192.168.103.31/31\n!\ninterface
+    Port-Channel7\n   description host3_PortChannel host3\n   no shutdown\n   switchport\n
+    \  switchport access vlan 20\n   spanning-tree portfast\n!\ninterface Ethernet3\n
+    \  description P2P_LINK_TO_SPINE1_Ethernet6\n   no shutdown\n   mtu 1500\n   no
+    switchport\n   ip address 192.168.103.25/31\n!\ninterface Ethernet4\n   description
+    P2P_LINK_TO_SPINE2_Ethernet6\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 192.168.103.27/31\n!\ninterface Ethernet5\n   description P2P_LINK_TO_SPINE3_Ethernet6\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 192.168.103.29/31\n!\ninterface
+    Ethernet6\n   description P2P_LINK_TO_SPINE4_Ethernet6\n   no shutdown\n   mtu
+    1500\n   no switchport\n   ip address 192.168.103.31/31\n!\ninterface Ethernet7\n
+    \  description host3_Ethernet2\n   no shutdown\n   channel-group 7 mode active\n!\ninterface
     Ethernet9\n   no shutdown\n   no switchport\n   vrf VRF_A\n   ip address 10.1.5.1/24\n!\ninterface
     Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
     192.168.101.4/32\n!\ninterface Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n

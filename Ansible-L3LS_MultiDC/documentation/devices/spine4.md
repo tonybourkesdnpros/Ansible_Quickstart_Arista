@@ -142,6 +142,7 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet5 | P2P_LINK_TO_LEAF3_Ethernet6 | routed | - | 192.168.203.10/31 | default | 1500 | False | - | - |
 | Ethernet6 | P2P_LINK_TO_LEAF4_Ethernet6 | routed | - | 192.168.203.14/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_BORDERLEAF2_Ethernet4 | routed | - | 192.168.203.22/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -160,6 +161,13 @@ interface Ethernet6
    mtu 1500
    no switchport
    ip address 192.168.203.14/31
+!
+interface Ethernet8
+   description P2P_LINK_TO_BORDERLEAF2_Ethernet4
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 192.168.203.22/31
 ```
 
 ### Loopback Interfaces
@@ -281,11 +289,14 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 192.168.101.11 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
+| 192.168.101.12 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.201.3 | 65202 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.201.4 | 65202 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
-| 192.168.201.6 | 65205 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
+| 192.168.201.6 | 65299 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.203.11 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.168.203.15 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 192.168.203.23 | 65299 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -316,6 +327,12 @@ router bgp 65002
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor 192.168.101.11 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.101.11 remote-as 65001
+   neighbor 192.168.101.11 description spine1
+   neighbor 192.168.101.12 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.101.12 remote-as 65001
+   neighbor 192.168.101.12 description spine2
    neighbor 192.168.201.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.201.3 remote-as 65202
    neighbor 192.168.201.3 description leaf3
@@ -323,7 +340,7 @@ router bgp 65002
    neighbor 192.168.201.4 remote-as 65202
    neighbor 192.168.201.4 description leaf4
    neighbor 192.168.201.6 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.201.6 remote-as 65205
+   neighbor 192.168.201.6 remote-as 65299
    neighbor 192.168.201.6 description borderleaf2
    neighbor 192.168.203.11 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.203.11 remote-as 65202
@@ -331,6 +348,9 @@ router bgp 65002
    neighbor 192.168.203.15 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.203.15 remote-as 65202
    neighbor 192.168.203.15 description leaf4_Ethernet6
+   neighbor 192.168.203.23 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.203.23 remote-as 65299
+   neighbor 192.168.203.23 description borderleaf2_Ethernet4
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

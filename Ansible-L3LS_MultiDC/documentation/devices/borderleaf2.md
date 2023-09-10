@@ -175,18 +175,42 @@ vlan 20
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_SPINE3_Ethernet8 | routed | - | 192.168.203.21/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_borderleaf1_Ethernet1 | routed | - | 172.31.252.1/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_borderleaf1_Ethernet2 | routed | - | 172.31.252.3/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_SPINE3_Ethernet8 | routed | - | 192.168.203.21/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_SPINE4_Ethernet8 | routed | - | 192.168.203.23/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet5
+interface Ethernet1
+   description P2P_LINK_TO_borderleaf1_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.252.1/31
+!
+interface Ethernet2
+   description P2P_LINK_TO_borderleaf1_Ethernet2
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.252.3/31
+!
+interface Ethernet3
    description P2P_LINK_TO_SPINE3_Ethernet8
    no shutdown
    mtu 1500
    no switchport
    ip address 192.168.203.21/31
+!
+interface Ethernet4
+   description P2P_LINK_TO_SPINE4_Ethernet8
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 192.168.203.23/31
 ```
 
 ### Loopback Interfaces
@@ -363,7 +387,7 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65205|  192.168.201.6 |
+| 65299|  192.168.201.6 |
 
 | BGP Tuning |
 | ---------- |
@@ -400,9 +424,12 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 172.31.252.0 | 65199 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.252.2 | 65199 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.168.201.13 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.201.14 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.203.20 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 192.168.203.22 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -428,7 +455,7 @@ ip route 0.0.0.0/0 192.168.0.1
 
 ```eos
 !
-router bgp 65205
+router bgp 65299
    router-id 192.168.201.6
    maximum-paths 4 ecmp 4
    update wait-install
@@ -446,6 +473,12 @@ router bgp 65205
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor 172.31.252.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.252.0 remote-as 65199
+   neighbor 172.31.252.0 description borderleaf1
+   neighbor 172.31.252.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.252.2 remote-as 65199
+   neighbor 172.31.252.2 description borderleaf1
    neighbor 192.168.201.13 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.201.13 remote-as 65002
    neighbor 192.168.201.13 description spine3
@@ -455,6 +488,9 @@ router bgp 65205
    neighbor 192.168.203.20 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.203.20 remote-as 65002
    neighbor 192.168.203.20 description spine3_Ethernet8
+   neighbor 192.168.203.22 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.203.22 remote-as 65002
+   neighbor 192.168.203.22 description spine4_Ethernet8
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle VRF_A

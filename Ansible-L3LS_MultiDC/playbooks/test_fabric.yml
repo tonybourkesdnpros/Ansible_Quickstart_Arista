@@ -1,8 +1,6 @@
-- name: "Run Fabric states validation"
+- name: Run Fabric states validation
   hosts: FABRIC
-  collections:
-    - arista.avd
   tasks:
-    - name: deploy configuration to device
-      import_role:
+    - name: Deploy configuration to device
+      ansible.builtin.import_role:
         name: arista.avd.eos_validate_state

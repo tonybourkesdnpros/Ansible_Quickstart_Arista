@@ -11,4 +11,15 @@ servers:
         port_channel:
           description: PortChannel host1
           mode: active
+  - name: host3
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        switch_ports: [ Ethernet7, Ethernet7 ]
+        switches: [ leaf3, leaf4 ]
+        vlans: 20
+        mode: access
+        spanning_tree_portfast: edge
+        port_channel:
+          description: PortChannel host3
+          mode: active
 

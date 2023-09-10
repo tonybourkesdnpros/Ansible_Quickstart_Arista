@@ -175,11 +175,28 @@ vlan 20
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_borderleaf2_Ethernet1 | routed | - | 172.31.252.0/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_borderleaf2_Ethernet2 | routed | - | 172.31.252.2/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_LINK_TO_SPINE1_Ethernet7 | routed | - | 192.168.103.17/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_SPINE2_Ethernet7 | routed | - | 192.168.103.19/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
+!
+interface Ethernet1
+   description P2P_LINK_TO_borderleaf2_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.252.0/31
+!
+interface Ethernet2
+   description P2P_LINK_TO_borderleaf2_Ethernet2
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.252.2/31
 !
 interface Ethernet3
    description P2P_LINK_TO_SPINE1_Ethernet7
@@ -187,6 +204,13 @@ interface Ethernet3
    mtu 1500
    no switchport
    ip address 192.168.103.17/31
+!
+interface Ethernet4
+   description P2P_LINK_TO_SPINE2_Ethernet7
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 192.168.103.19/31
 ```
 
 ### Loopback Interfaces
@@ -363,7 +387,7 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65104|  192.168.101.5 |
+| 65199|  192.168.101.5 |
 
 | BGP Tuning |
 | ---------- |
@@ -400,9 +424,12 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 172.31.252.1 | 65299 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.252.3 | 65299 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.168.101.11 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.101.12 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.103.16 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 192.168.103.18 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -428,7 +455,7 @@ ip route 0.0.0.0/0 192.168.0.1
 
 ```eos
 !
-router bgp 65104
+router bgp 65199
    router-id 192.168.101.5
    maximum-paths 4 ecmp 4
    update wait-install
@@ -446,6 +473,12 @@ router bgp 65104
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor 172.31.252.1 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.252.1 remote-as 65299
+   neighbor 172.31.252.1 description borderleaf2
+   neighbor 172.31.252.3 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.252.3 remote-as 65299
+   neighbor 172.31.252.3 description borderleaf2
    neighbor 192.168.101.11 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.11 remote-as 65001
    neighbor 192.168.101.11 description spine1
@@ -455,6 +488,9 @@ router bgp 65104
    neighbor 192.168.103.16 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.103.16 remote-as 65001
    neighbor 192.168.103.16 description spine1_Ethernet7
+   neighbor 192.168.103.18 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.103.18 remote-as 65001
+   neighbor 192.168.103.18 description spine2_Ethernet7
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle VRF_A
