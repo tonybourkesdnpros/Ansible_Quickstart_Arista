@@ -47,6 +47,8 @@
 | l3leaf | leaf2 | Ethernet4 | spine | spine2 | Ethernet4 |
 | l3leaf | leaf2 | Ethernet5 | spine | spine3 | Ethernet4 |
 | l3leaf | leaf2 | Ethernet6 | spine | spine4 | Ethernet4 |
+| l3leaf | leaf3 | Ethernet1 | mlag_peer | leaf4 | Ethernet1 |
+| l3leaf | leaf3 | Ethernet2 | mlag_peer | leaf4 | Ethernet2 |
 | l3leaf | leaf3 | Ethernet3 | spine | spine1 | Ethernet5 |
 | l3leaf | leaf3 | Ethernet4 | spine | spine2 | Ethernet5 |
 | l3leaf | leaf3 | Ethernet5 | spine | spine3 | Ethernet5 |
@@ -117,4 +119,4 @@
 | FABRIC | leaf1 | 192.168.102.1/32 |
 | FABRIC | leaf2 | 192.168.102.1/32 |
 | FABRIC | leaf3 | 192.168.102.3/32 |
-| FABRIC | leaf4 | 192.168.102.4/32 |
+| FABRIC | leaf4 | 192.168.102.3/32 |

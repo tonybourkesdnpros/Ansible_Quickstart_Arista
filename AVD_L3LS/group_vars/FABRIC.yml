@@ -19,16 +19,16 @@ spine:
       - 'distance bgp 20 200 200'
     mlag: false
   nodes:
-    spine1:
+    - name: spine1
       id: 11
       mgmt_ip: 192.168.0.11/24
-    spine2:
+    - name: spine2
       id: 12
       mgmt_ip: 192.168.0.12/24
-    spine3:
+    - name: spine3
       id: 13
       mgmt_ip: 192.168.0.13/24
-    spine4:
+    - name: spine4
       id: 14
       mgmt_ip: 192.168.0.14/24
 
@@ -54,27 +54,29 @@ l3leaf:
     spanning_tree_mode: mstp # Spanning Tree is still enabled even in EVPN setups
     spanning_tree_priority: 16384 
     mlag: true # By default, use MLAG
-
-  node_groups:
-    mlag1:
+  node_groups: 
+    - group: mlag1
+    # bgp_as is configured automatically from the range, but can be overriden
       nodes:
-        leaf1:
+        - name: leaf1
           id: 1
           mgmt_ip: 192.168.0.21/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3, Ethernet3, Ethernet3]
-        leaf2:
+        - name: leaf2
           id: 2
           mgmt_ip: 192.168.0.22/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4, Ethernet4, Ethernet4]
-  nodes:
-    leaf3:
-      id: 3
-      mgmt_ip: 192.168.0.23/24
-      uplink_switch_interfaces: [Ethernet5, Ethernet5, Ethernet5, Ethernet5]
-    leaf4:
-      id: 4
-      mgmt_ip: 192.168.0.24/24
-      uplink_switch_interfaces: [Ethernet6, Ethernet6, Ethernet6, Ethernet6]
+    - group: mlag2
+      bgp_as: 65299 # Overriden automatic allocation for host4/R1 peering
+      nodes:
+        - name: leaf3
+          id: 3
+          mgmt_ip: 192.168.0.23/24
+          uplink_switch_interfaces: [Ethernet5, Ethernet5, Ethernet5, Ethernet5]
+        - name: leaf4
+          id: 4
+          mgmt_ip: 192.168.0.24/24
+          uplink_switch_interfaces: [Ethernet6, Ethernet6, Ethernet6, Ethernet6]
 
 
 
@@ -105,6 +107,6 @@ bgp_update_wait_for_convergence: false
 
 # Needed for Arista ATD Lab Environment
 dns_domain: atd.lab
-mgmt_interface: Management1
-mgmt_interface_vrf: default
+mgmt_interface: Management0
+mgmt_interface_vrf: MGMT
 mgmt_gateway: 192.168.0.1

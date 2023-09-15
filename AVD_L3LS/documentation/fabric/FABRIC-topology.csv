@@ -13,11 +13,15 @@ l3leaf,leaf2,Ethernet4,spine,spine2,Ethernet4,True
 l3leaf,leaf2,Ethernet5,spine,spine3,Ethernet4,True
 l3leaf,leaf2,Ethernet6,spine,spine4,Ethernet4,True
 l3leaf,leaf2,Ethernet7,server,host1,Ethernet2,True
+l3leaf,leaf3,Ethernet1,mlag_peer,leaf4,Ethernet1,True
+l3leaf,leaf3,Ethernet2,mlag_peer,leaf4,Ethernet2,True
 l3leaf,leaf3,Ethernet3,spine,spine1,Ethernet5,True
 l3leaf,leaf3,Ethernet4,spine,spine2,Ethernet5,True
 l3leaf,leaf3,Ethernet5,spine,spine3,Ethernet5,True
 l3leaf,leaf3,Ethernet6,spine,spine4,Ethernet5,True
 l3leaf,leaf3,Ethernet7,server,host3,Ethernet1,True
+l3leaf,leaf4,Ethernet1,mlag_peer,leaf3,Ethernet1,True
+l3leaf,leaf4,Ethernet2,mlag_peer,leaf3,Ethernet2,True
 l3leaf,leaf4,Ethernet3,spine,spine1,Ethernet6,True
 l3leaf,leaf4,Ethernet4,spine,spine2,Ethernet6,True
 l3leaf,leaf4,Ethernet5,spine,spine3,Ethernet6,True

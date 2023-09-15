@@ -52,21 +52,22 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | default | 192.168.0.22/24 | 192.168.0.1 |
+| Management0 | oob_management | oob | MGMT | 192.168.0.22/24 | 192.168.0.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | default | - | - |
+| Management0 | oob_management | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management1
+interface Management0
    description oob_management
    no shutdown
+   vrf MGMT
    ip address 192.168.0.22/24
 ```
 
@@ -93,7 +94,7 @@ dns domain atd.lab
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| default | - | - |
+| MGMT | - | - |
 
 #### Management API HTTP Configuration
 
@@ -103,7 +104,7 @@ management api http-commands
    protocol https
    no shutdown
    !
-   vrf default
+   vrf MGMT
       no shutdown
 ```
 
@@ -471,6 +472,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
+| MGMT | False |
 | VRF_A | True |
 
 #### IP Routing Device Configuration
@@ -478,6 +480,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 ```eos
 !
 ip routing
+no ip routing vrf MGMT
 ip routing vrf VRF_A
 ```
 
@@ -488,7 +491,7 @@ ip routing vrf VRF_A
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| default | false |
+| MGMT | false |
 | VRF_A | false |
 
 ### Static Routes
@@ -497,13 +500,13 @@ ip routing vrf VRF_A
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| default | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route 0.0.0.0/0 192.168.0.1
+ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 ```
 
 ### Router BGP
@@ -762,11 +765,14 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
+| MGMT | disabled |
 | VRF_A | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
+!
+vrf instance MGMT
 !
 vrf instance VRF_A
 ```

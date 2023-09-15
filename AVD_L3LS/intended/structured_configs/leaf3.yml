@@ -1,6 +1,6 @@
 hostname: leaf3
 router_bgp:
-  as: '65102'
+  as: '65299'
   router_id: 192.168.101.3
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -14,6 +14,14 @@ router_bgp:
     paths: 4
     ecmp: 4
   peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
+    remote_as: '65299'
+    next_hop_self: true
+    description: leaf4
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
     maximum_routes: 12000
@@ -27,14 +35,16 @@ router_bgp:
     ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   neighbors:
+  - ip_address: 10.255.251.5
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    description: leaf4
   - ip_address: 192.168.103.16
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
@@ -67,6 +77,9 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: spine4
     remote_as: '65001'
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -86,6 +99,9 @@ router_bgp:
         - '10:10'
     redistribute_routes:
     - source_protocol: connected
+    neighbors:
+    - ip_address: 10.255.251.5
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
   vlans:
   - id: 10
     tenant: ACME
@@ -104,7 +120,7 @@ router_bgp:
     redistribute_routes:
     - learned
 static_routes:
-- vrf: default
+- vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.0.1
 service_routing_protocols_model: multi-agent
@@ -119,25 +135,117 @@ spanning_tree:
   mst_instances:
   - id: '0'
     priority: 16384
+  no_spanning_tree_vlan: 4093-4094
 vrfs:
-- name: default
+- name: MGMT
   ip_routing: false
 - name: VRF_A
   tenant: ACME
   ip_routing: true
 management_interfaces:
-- name: Management1
+- name: Management0
   description: oob_management
   shutdown: false
-  vrf: default
+  vrf: MGMT
   ip_address: 192.168.0.23/24
   gateway: 192.168.0.1
   type: oob
 management_api_http:
   enable_vrfs:
-  - name: default
+  - name: MGMT
   enable_https: true
+vlans:
+- id: 4093
+  tenant: system
+  name: LEAF_PEER_L3
+  trunk_groups:
+  - LEAF_PEER_L3
+- id: 4094
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+- id: 10
+  name: DMZ
+  tenant: ACME
+- id: 20
+  name: Internal
+  tenant: ACME
+- id: 3009
+  name: MLAG_iBGP_VRF_A
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: ACME
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.251.4/31
+- name: Vlan4094
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.252.4/31
+  no_autostate: true
+  mtu: 1500
+- name: Vlan10
+  tenant: ACME
+  description: DMZ
+  shutdown: false
+  ip_address_virtual: 10.1.10.1/24
+  vrf: VRF_A
+- name: Vlan20
+  tenant: ACME
+  description: Internal
+  shutdown: false
+  ip_address_virtual: 10.1.20.1/24
+  vrf: VRF_A
+- name: Vlan3009
+  tenant: ACME
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf VRF_A'
+  vrf: VRF_A
+  mtu: 1500
+  ip_address: 10.255.251.4/31
+port_channel_interfaces:
+- name: Port-Channel1
+  description: MLAG_PEER_leaf4_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  trunk_groups:
+  - LEAF_PEER_L3
+  - MLAG
+- name: Port-Channel7
+  description: host3_PortChannel host3
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '20'
+  spanning_tree_portfast: edge
+  mlag: 7
 ethernet_interfaces:
+- name: Ethernet1
+  peer: leaf4
+  peer_interface: Ethernet1
+  peer_type: mlag_peer
+  description: MLAG_PEER_leaf4_Ethernet1
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet2
+  peer: leaf4
+  peer_interface: Ethernet2
+  peer_type: mlag_peer
+  description: MLAG_PEER_leaf4_Ethernet2
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
 - name: Ethernet3
   peer: spine1
   peer_interface: Ethernet5
@@ -184,6 +292,27 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
+mlag_configuration:
+  domain_id: mlag2
+  local_interface: Vlan4094
+  peer_address: 10.255.252.5
+  peer_link: Port-Channel1
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - origin incomplete
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -200,47 +329,21 @@ prefix_lists:
     action: permit 192.168.101.0/24 eq 32
   - sequence: 20
     action: permit 192.168.102.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
-vlans:
-- id: 10
-  name: DMZ
-  tenant: ACME
-- id: 20
-  name: Internal
-  tenant: ACME
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
-vlan_interfaces:
-- name: Vlan10
-  tenant: ACME
-  description: DMZ
-  shutdown: false
-  ip_address_virtual: 10.1.10.1/24
-  vrf: VRF_A
-- name: Vlan20
-  tenant: ACME
-  description: Internal
-  shutdown: false
-  ip_address_virtual: 10.1.20.1/24
-  vrf: VRF_A
 vxlan_interface:
   Vxlan1:
     description: leaf3_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
       - id: 10
         vni: 10010
@@ -249,11 +352,3 @@ vxlan_interface:
       vrfs:
       - name: VRF_A
         vni: 10
-port_channel_interfaces:
-- name: Port-Channel7
-  description: host3_PortChannel host3
-  type: switched
-  shutdown: false
-  mode: access
-  vlans: '20'
-  spanning_tree_portfast: edge
